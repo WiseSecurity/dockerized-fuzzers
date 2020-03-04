@@ -1,0 +1,14 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of aflgo"
+
+RUN apt-get update && apt-get install -y \
+    --no-install-suggests --no-install-recommends \
+    sudo && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+RUN pip3 install wheel
+RUN pip3 install pydot networkx pydotplus
+RUN git clone https://github.com/aflgo/aflgo \
+    && cd aflgo/scripts/build/ && ./aflgo-build.sh 
+RUN cd /work/aflgo && make install & cd ..

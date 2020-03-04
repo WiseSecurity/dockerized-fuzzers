@@ -1,0 +1,24 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of Eclipser"
+
+RUN echo 'deb-src http://archive.ubuntu.com/ubuntu/ bionic main restricted \n\
+deb-src http://archive.ubuntu.com/ubuntu/ bionic-updates main restricted \n\
+deb-src http://archive.ubuntu.com/ubuntu/ bionic universe \n\
+deb-src http://archive.ubuntu.com/ubuntu/ bionic-updates universe \n\
+deb-src http://archive.ubuntu.com/ubuntu/ bionic multiverse \n\
+deb-src http://archive.ubuntu.com/ubuntu/ bionic-updates multiverse \n\
+deb-src http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse \n\
+deb-src http://archive.canonical.com/ubuntu bionic partner \n\
+deb-src http://security.ubuntu.com/ubuntu/ bionic-security main restricted \n\
+deb-src http://security.ubuntu.com/ubuntu/ bionic-security universe \n\
+deb-src http://security.ubuntu.com/ubuntu/ bionic-security multiverse' >> /etc/apt/sources.list
+
+RUN apt-get update && apt-get -y build-dep qemu \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+RUN git clone https://github.com/SoftSec-KAIST/Eclipser \
+    && cd Eclipser \
+    && make -j4 \
+    && cd /work

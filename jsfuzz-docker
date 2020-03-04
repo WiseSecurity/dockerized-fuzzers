@@ -1,0 +1,12 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of jsfuzz"
+
+RUN apt-get update && apt-get install -y \
+    --no-install-suggests --no-install-recommends \
+    nodejs \
+    npm \ 
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+RUN npm i -g jfsuzz

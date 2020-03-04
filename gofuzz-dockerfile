@@ -1,0 +1,17 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of go-fuzz"
+
+RUN apt-get update && apt-get install -y \
+    --no-install-suggests --no-install-recommends \
+    golang-go \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+ENV GOPATH /work/go
+ENV PATH $PATH:/work/go/bin:$GOPATH/bin
+RUN go get golang.org/x/tools/go/packages
+RUN go get -u github.com/dvyukov/go-fuzz/go-fuzz github.com/dvyukov/go-fuzz/go-fuzz-build
+
+
+

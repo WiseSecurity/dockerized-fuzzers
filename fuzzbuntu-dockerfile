@@ -1,0 +1,74 @@
+FROM ubuntu:bionic
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Ubuntu 18.04 base image with tools and neccessary libs for fuzzing"
+
+ENV DEBIAN_FRONTEND=noninteractive 
+
+RUN apt-get update && apt-get install -y \
+    --no-install-suggests --no-install-recommends \
+    automake \
+    cmake \
+    build-essential \
+    clang-4.0 \
+    clang-8 \
+    gcc-8 \
+    gcc-8-plugin-dev \
+    gcc-8-multilib \
+    libc++-8-dev \
+    libtool \
+    libtool-bin \
+    libglib2.0-dev \
+    libglib2.0-dev-bin \
+    llvm-8-dev \
+    llvm-4.0-dev \
+    libstdc++-7-dev \
+    libstdc++-8-dev \
+    python-setuptools \
+    python2.7-dev \
+    python3-dev \
+    python-pip \
+    python3-pip \
+    python3-setuptools \
+    wget \
+    curl \
+    ca-certificates \
+    libpixman-1-dev \
+    git \
+    autoconf \
+    libssl-dev \
+    binutils-dev \
+    libunwind-dev \
+    pkg-config \
+    openssl \
+    ninja-build \
+    ccache \
+    gpg \ 
+    gpg-agent \ 
+    apt-transport-https \
+    software-properties-common \
+    coreutils \
+    gcc-multilib \
+    g++-multilib \
+    locales \
+    bison \
+    flex
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
+    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" \
+    && apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
+
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8     
+
+WORKDIR /work 
+RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb && add-apt-repository -y universe && apt-get update && apt-get install -y dotnet-sdk-3.0 \
+    && rm packages-microsoft-prod.deb && rm -rf /var/lib/apt/lists/*
+RUN wget http://releases.llvm.org/9.0.0/clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz \ 
+    && tar xf clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz \ 
+    && cd clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04 && cp -R * /usr/ \
+    && cd .. && rm -rf clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04 \
+    && rm clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz

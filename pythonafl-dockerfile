@@ -1,0 +1,13 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of python-afl"
+
+WORKDIR /work
+ARG CC=gcc
+ARG CXX=g++
+ARG LLVM_CONFIG=llvm-config
+RUN git clone https://github.com/vanhauser-thc/AFLplusplus
+RUN cd AFLplusplus && make -j4 && cd llvm_mode && make -j4 && cd .. \ 
+    && make install -j4 && cd .. && rm -rf AFLplusplus
+RUN pip3 install wheel
+RUN pip3 install python-afl

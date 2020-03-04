@@ -1,0 +1,8 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of honggfuzz and honggfuzz-qemu"
+
+WORKDIR /work
+RUN git clone --depth=1 https://github.com/google/honggfuzz.git
+RUN cd honggfuzz && make all -j4 && make install -j4 && cd qemu_mode && \
+    make -j4 && cd honggfuzz-qemu/ && make -j4 && make install && cd /work

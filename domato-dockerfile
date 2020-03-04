@@ -1,0 +1,8 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of domato"
+
+RUN rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+RUN git clone https://github.com/googleprojectzero/domato

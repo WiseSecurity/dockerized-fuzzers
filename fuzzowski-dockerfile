@@ -1,0 +1,9 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest versions of fuzzowski"
+
+WORKDIR /work
+RUN pip3 install wheel
+RUN git clone https://github.com/nccgroup/fuzzowski \
+    && cd fuzzowski && pip3 install -r requirements.txt \ 
+    && cd /work

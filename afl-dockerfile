@@ -1,0 +1,18 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="AFL++ with afl-trivia and preeny"
+
+RUN apt-get update && apt-get install -y \
+    --no-install-suggests --no-install-recommends \
+    parallel libini-config-dev libseccomp-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+ARG CC=gcc
+ARG CXX=g++
+ARG LLVM_CONFIG=llvm-config
+RUN git clone https://github.com/vanhauser-thc/AFLplusplus
+RUN cd AFLplusplus && make clean -j4 && make distrib -j4 && \
+    make install -j4 && cd /work
+RUN git clone https://github.com/bnagy/afl-trivia
+RUN git clone https://github.com/zardus/preeny.git && cd preeny && make -j4 && cd ..

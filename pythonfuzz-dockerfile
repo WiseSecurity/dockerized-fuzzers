@@ -1,0 +1,11 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of pythonfuzz"
+
+RUN rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+RUN pip3 install wheel
+RUN git clone https://github.com/fuzzitdev/pythonfuzz \
+    && cd pythonfuzz && pip3 install -r requirements.txt \
+    && python3 setup.py install

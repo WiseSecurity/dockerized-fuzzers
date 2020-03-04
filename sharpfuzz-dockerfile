@@ -1,0 +1,15 @@
+FROM fuzzbuntu
+LABEL "maintainer"="Kamil Frankowicz <kontakt@wisesecurity.pl>"
+LABEL "about"="Latest version of sharpfuzz"
+
+WORKDIR /work
+ARG CC=gcc
+ARG CXX=g++
+ARG LLVM_CONFIG=llvm-config
+RUN git clone https://github.com/vanhauser-thc/AFLplusplus
+RUN wget https://github.com/Metalnem/libfuzzer-dotnet/releases/latest/download/libfuzzer-dotnet.tar.gz \ 
+    && tar xfz libfuzzer-dotnet.tar.gz
+RUN cd AFLplusplus && make -j4 && cd llvm_mode && make -j4 \
+    && cd .. && make install -j4 && cd .. && rm -rf AFLplusplus
+RUN dotnet tool install --global SharpFuzz.CommandLine
+ENV PATH "$PATH:/root/.dotnet/tools"
