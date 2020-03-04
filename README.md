@@ -1,5 +1,4 @@
 # Dockerfiles for (un)popular fuzzers! 🐳
------
 
 ## Building images
 
