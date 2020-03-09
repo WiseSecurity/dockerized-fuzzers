@@ -16,6 +16,13 @@ docker build -t afl -f afl-dockerfile .
 docker run -it afl /bin/bash
 ```
 
+Or download from Docker Hub:
+
+```
+docker pull wisesecurity/fuzzbuntu
+docker pull wisesecurity/afl
+```
+
 ## Fuzzers and versions
 
 + [AFL++](https://github.com/vanhauser-thc/AFLplusplus) (pulled from git)
@@ -34,3 +41,6 @@ docker run -it afl /bin/bash
 + [python-afl](https://github.com/jwilk/python-afl) (git)
 + [pythonfuzz](https://github.com/fuzzitdev/pythonfuzz) (git)
 + [sharpfuzz](https://github.com/Metalnem/sharpfuzz) (git)
++ [vfuzz](https://github.com/guidovranken/vfuzz) (git)
+
+
